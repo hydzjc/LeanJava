@@ -1,5 +1,6 @@
 package relfect;
 import java.lang.reflect.*;
+import java.lang.*;
 /**
  * Created by macbook on 2017/1/13.
  * 实例化Class的方法(4种方法)
@@ -44,6 +45,7 @@ public class ClassRelfect {
 
         //方法二：调用指定的构造器创建运行时类的对象
         //我们指定public类型的构造方法Car(String name,int age,int id)来创建对象
+        //可以传入数组，也可以是parameters，1.7之前只能使用数组
         Class[] cArg = new Class[3];
         cArg[0]=String.class;
         cArg[1]=int.class;
@@ -164,7 +166,7 @@ public class ClassRelfect {
         System.out.println("callConstruct");
 
         //对private类型的构造方法进行操作
-        Constructor constructor1 = c.getDeclaredConstructor(String);
+        Constructor constructor1 = c.getDeclaredConstructor(String.class);
         constructor1.setAccessible(true);
         car = (Car)constructor1.newInstance("zsmj");
         System.out.println("car:"+car);
@@ -255,9 +257,43 @@ public class ClassRelfect {
         System.out.println("修改后person对象的weather="+weather);
     }
 
-    public static void main(){
-        ClassRelfect x = new ClassRelfect();
-        //x.createClass();
+    public static void main(String[] args) {
+        try {
+            createClass();
+        } catch (ClassNotFoundException e) {
+        }
+
+        try {
+            Car c = new Car();
+            createInstance(c.getClass());
+        }catch (Exception e){
+        }
+
+        {
+            Car c = new Car();
+            getConstructs(c.getClass());
+            getMethods(c.getClass());
+            GetFields(c.getClass());
+            getClassOtherInfo(c.getClass());
+
+        }
+        try{
+            callConstruct(c.getClass());
+        }catch(Exception e){}
+
+        try{
+            callMethod(c.getClass());
+        }catch(Exception e){}
+
+        try{
+            callField(c.getClass());
+        }catch(Exception e){}
+
+
+
+
+
+
     }
 }
 

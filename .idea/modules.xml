@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LeanJava.iml" filepath="$PROJECT_DIR$/LeanJava.iml" />
       <module fileurl="file://$PROJECT_DIR$/relfect/relfect.iml" filepath="$PROJECT_DIR$/relfect/relfect.iml" />
     </modules>
   </component>
