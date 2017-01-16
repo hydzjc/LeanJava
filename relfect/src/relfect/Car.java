@@ -39,7 +39,10 @@ public class Car extends Wheel implements Klaxon{
         super();
         System.out.print("Creat Car");
     }
-
+    private   Car(String name){
+        super();
+        this.name = name;
+    }
     public Car(String name,int size,int color) {
         super();
         this.name = name;
@@ -52,6 +55,10 @@ public class Car extends Wheel implements Klaxon{
     }
     private class innerpriCar{
 
+    }
+    @Override
+    public String toString() {
+        return "Persion [name=" + name + ", color=" + color + ", size=" + size +",sign="+sign+ "]---"+super.toString();
     }
     //@Override
     public void speak(String talk) {

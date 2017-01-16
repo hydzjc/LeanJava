@@ -1,4 +1,5 @@
 package relfect;
+import java.io.PrintWriter;
 import java.lang.reflect.*;
 import java.lang.*;
 /**
@@ -58,8 +59,8 @@ public class ClassRelfect {
         //我们指定private类型的构造方法Car(String name)来创建对象
         constructor = c.getDeclaredConstructor(String.class);
         constructor.setAccessible(true);
-        car = (Car) constructor.newInstance("****");
-        System.out.println("方法二：调用指定的构造器(private)创建运行时类的对象 --car: "+car);
+        car = (Car) constructor.newInstance("****");//必须要求构造函数支持
+        System.out.println("方法三：调用指定的构造器(private)创建运行时类的对象 --car: "+car);
     }
     private static void getConstructs(Class c) {
         // TODO Auto-generated method stub
@@ -188,25 +189,25 @@ public class ClassRelfect {
         System.out.println("getDeclaredMethod 方法获取类本身声明的方法，包括private类型的方法，以setName方法为例:");
         Method m1 = c.getDeclaredMethod("setName", String.class);
         m1.setAccessible(true);
-        System.out.println("修改前的person:"+car);
+        System.out.println("修改前的car:"+car);
         m1.invoke(car, "yyf_01");
-        System.out.println("修改后的person:"+car);
+        System.out.println("修改后的car:"+car);
 
         //2.对public类型的方法进行操作，包括父类的方法
         //getMethod 对public类型的方法进行操作，包括父类的方法
         //2.1 以运行类的本身声明的public类型的setAge方法为例
         System.out.println("getMethod 对public类型的方法进行操作，包括父类的方法,以类本身的setAge方法为例:");
         Method m2 = c.getMethod("setAge", int.class);
-        System.out.println("修改前的person:"+car);
+        System.out.println("修改前的car:"+car);
         m2.invoke(car, 11);
-        System.out.println("修改后的person:"+car);
+        System.out.println("修改后的car:"+car);
 
         //2.2 以运行类的父类声明的public类型的setWeight方法为例
         System.out.println("getMethod 对public类型的方法进行操作，包括父类的方法,以父类的setWeight方法为例:");
         Method m3 = c.getMethod("setWeight", int.class);
-        System.out.println("修改前的person:"+car);
+        System.out.println("修改前的car:"+car);
         m3.invoke(car, 100);
-        System.out.println("修改后的person:"+car);
+        System.out.println("修改后的car:"+car);
 
         //3.对static类型的方法进行操作，以类本身的showWeather静态方法为例
         System.out.println("getMethod 对public类型的方法进行操作，包括父类的方法,以父类的showWeather方法为例:");
@@ -226,35 +227,35 @@ public class ClassRelfect {
         System.out.println(" ");
         System.out.println("callField");
 
-        //1.对public类型的属性进行操作，以类本身的public属性id为例:
-        System.out.println("对public类型的属性进行操作，以类本身的public属性id为例");
-        Field f1 = c.getField("id");
-        int id = (int)f1.get(car);
-        System.out.println("修改前person对象的id="+id);
-        f1.set(car, 3);
-        id = (int)f1.get(car);
-        System.out.println("修改后person对象的id="+id);
+        //1.对private类型的属性进行操作，以类本身的private属性color为例
+        System.out.println("对private类型的属性进行操作，以类本身的private属性color为例");
+        Field f1 = c.getDeclaredField("color");
+        f1.setAccessible(true);
+        int color = (int)f1.get(car);
+        System.out.println("修改前car对象的color="+color);
+        f1.set(car, 12);
+        color = (int)f1.get(car);
+        System.out.println("修改后car对象的color="+color);
 
-        //2.对private类型的属性进行操作，以类本身的private属性age为例:
-        System.out.println("对private类型的属性进行操作，以类本身的private属性age为例:");
-        Field f2 = c.getDeclaredField("age");
-        f2.setAccessible(true);
-        int age = (int)f2.get(car);
-        System.out.println("修改前person对象的age="+age);
-        f2.set(car, 12);
-        age = (int)f2.get(car);
-        System.out.println("修改后person对象的age="+age);
+        //2.对public类型的属性进行操作，以类本身的public属性size为例:
+        System.out.println("对public类型的属性进行操作，以类本身的public属性size为例:");
+        Field f2 = c.getField("size");
+        //f2.setAccessible(true);
+        int size = (int)f2.get(car);
+        System.out.println("修改前car对象的size="+size);
+        f2.set(car, 3);
+        size = (int)f2.get(car);
+        System.out.println("修改后car对象的size="+size);
 
         //3.对static类型的属性进行操作，以类本身的static属性weather为例:
-        System.out.println("对static类型的属性进行操作，以类本身的static属性weather为例:");
-        Field f3 = c.getDeclaredField("weather");
+        System.out.println("对static类型的属性进行操作，以类本身的static属性sign为例:");
+        Field f3 = c.getDeclaredField("sign");
         f3.setAccessible(true);
-        String weather = (String)f3.get(car);
-        System.out.println("修改前person对象的weather="+weather);
-        //f3.set(car, "今天天气好凉爽！！");
-        f3.set(null, "今天天气好凉爽！！");
-        weather = (String)f3.get(car);
-        System.out.println("修改后person对象的weather="+weather);
+        String sign = (String)f3.get(car);
+        System.out.println("修改前car对象的sign="+sign);
+        f3.set(null, "擎天柱！！");
+        sign = (String)f3.get(car);
+        System.out.println("修改后car对象的sign="+sign);
     }
 
     public static void main(String[] args) {
@@ -267,6 +268,7 @@ public class ClassRelfect {
             Car c = new Car();
             createInstance(c.getClass());
         }catch (Exception e){
+            System.out.print("wrong" + e.toString());
         }
 
         {
@@ -286,14 +288,10 @@ public class ClassRelfect {
         }catch(Exception e){}
 
         try{
-            callField(c.getClass());
-        }catch(Exception e){}
-
-
-
-
-
-
+            callField(car.getClass());
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
     }
 }
 
